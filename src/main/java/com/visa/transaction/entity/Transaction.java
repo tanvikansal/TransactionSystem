@@ -3,10 +3,11 @@ package com.visa.transaction.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -16,8 +17,8 @@ import java.util.UUID;
 public class Transaction {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "transaction_id")
+    @UuidGenerator
+    @Column(name = "transaction_id", nullable = false, updatable = false)
     private UUID transactionId;
 
     @Column(name = "account_id", nullable = false)
@@ -31,4 +32,8 @@ public class Transaction {
 
     @Column(name = "event_date", nullable = false, updatable = false)
     private Instant eventDate;
+
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private Instant createdAt;
 }
