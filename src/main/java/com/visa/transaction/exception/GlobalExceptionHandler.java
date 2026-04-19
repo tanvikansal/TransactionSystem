@@ -53,4 +53,22 @@ public class GlobalExceptionHandler {
                 "message", "Invalid input"
         ));
     }
+
+    @ExceptionHandler(AccountNotFoundException.class)
+    public ResponseEntity<?> handleAccountNotFound(AccountNotFoundException ex) {
+
+        return ResponseEntity.status(404).body(Map.of(
+                "error", "ACCOUNT_NOT_FOUND",
+                "message", ex.getMessage()
+        ));
+    }
+
+    @ExceptionHandler(OperationTypeNotFoundException.class)
+    public ResponseEntity<?> handleOperationTypeNotFound(OperationTypeNotFoundException ex) {
+
+        return ResponseEntity.status(404).body(Map.of(
+                "error", "OPERATION_TYPE_NOT_FOUND",
+                "message", ex.getMessage()
+        ));
+    }
 }
