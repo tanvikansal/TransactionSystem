@@ -7,7 +7,7 @@ A Spring Boot–based backend system for managing **Accounts** and **Transaction
 # 🚀 Features
 
 * Account creation and retrieval
-* Transaction creation and lookup
+* Transaction creation
 * PostgreSQL as the database
 * Flyway for schema migrations
 * Dockerized setup for easy local development
@@ -115,44 +115,6 @@ These are automatically executed on application startup.
 
 ---
 
-# ⚠️ Important DB Note
-
-Ensure **column types match**:
-
-* `accounts.account_id` → UUID
-* `transactions.account_id` → UUID
-
-If mismatched (e.g., `varchar` vs `uuid`), Flyway will fail with:
-
-```
-foreign key constraint cannot be implemented
-```
-
----
-
-# ▶️ Running Locally (Without Docker)
-
-## 1. Start PostgreSQL manually
-
-## 2. Update `application.properties`
-
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/transaction_db
-spring.datasource.username=postgres
-spring.datasource.password=postgres
-
-spring.jpa.hibernate.ddl-auto=none
-spring.flyway.enabled=true
-```
-
-## 3. Run the app
-
-```bash
-./gradlew bootRun
-```
-
----
-
 # 🌐 API Documentation (Swagger)
 
 Swagger UI is available at:
@@ -177,8 +139,7 @@ Request:
 
 ```json
 {
-  "name": "John Doe",
-  "balance": 1000
+  "document_number": "123456789001"
 }
 ```
 
@@ -204,20 +165,12 @@ Request:
 
 ```json
 {
-  "accountId": "uuid",
-  "amount": 250
+  "accountId": "3031db51-e275-4031-81e1-ad92c222a96c",
+  "operationTypeId": 4,
+  "amount": 100.00
 }
 ```
 
----
-
-### Get Transactions by Account
-
-```
-GET /transactions/account/{accountId}
-```
-
----
 
 # 📄 OpenAPI Spec (Reference)
 
@@ -301,9 +254,11 @@ paths:
 ## Create Account
 
 ```bash
-curl -X POST http://localhost:8080/accounts \
--H "Content-Type: application/json" \
--d '{"name":"John Doe","balance":1000}'
+curl -X POST "http://localhost:8080/accounts" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "document_number": "123456789001"
+  }'
 ```
 
 ---
@@ -311,7 +266,11 @@ curl -X POST http://localhost:8080/accounts \
 ## Create Transaction
 
 ```bash
-curl -X POST http://localhost:8080/transactions \
--H "Content-Type: application/json" \
--d '{"accountId":"<UUID>","amount":200}'
+curl -X POST "http://localhost:8080/transactions" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "accountId": "3031db51-e275-4031-81e1-ad92c222a96c",
+    "operationTypeId": 4,
+    "amount": 100.00
+  }'
 ```
