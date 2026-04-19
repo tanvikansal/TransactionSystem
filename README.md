@@ -232,19 +232,6 @@ paths:
         '200':
           description: Transaction created
 
-  /transactions/account/{accountId}:
-    get:
-      summary: Get transactions by account
-      parameters:
-        - name: accountId
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '200':
-          description: List of transactions
 ```
 
 ---
